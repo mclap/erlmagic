@@ -29,7 +29,7 @@ param_base_type(T) ->
 	"StorageType" ->
 	    "??StorageType";
 	"bool" ->
-	    "ERL_BOOLEAN_VALUE";
+	    "ERL_INT_VALUE";
 	"char" ->
 	    "ERL_INT_VALUE";
 	"double" ->
@@ -37,9 +37,9 @@ param_base_type(T) ->
 	"int" ->
 	    "ERL_INT_VALUE";
 	"std::string" ->
-	    "ERL_LIST_VALUE";
+	    "erl_iolist_to_string";
 	"std::string&" ->
-	    "ERL_LIST_VALUE";
+	    "erl_iolist_to_string";
 	"void" ->
 	    "void";
 	[] ->
@@ -72,6 +72,8 @@ param_name(H) ->
     case R of
 	nil ->
 	    nil;
+        [$*|_] ->
+	    throw("Bad param");
 	_ ->
 	    string:strip(string:strip(R, both, $&), both, $_)
     end.
@@ -82,19 +84,20 @@ make_param(L, N) ->
 make_param([], _, Acc1, Acc2) ->
     {lists:reverse(Acc1), lists:reverse(Acc2)};
 make_param([H|L], N, Acc1, Acc2) ->
+    Pname = param_name(H),
     T = get_type(chp2:param_type(H)),
     case param_base_type(chp2:param_type(H)) of 
 	"void" ->
 	    Acc21 = Acc2,
 	    Acc11 = Acc1;
 	Pname_type ->
-	    Acc21 = [lists:flatten(io_lib:format("\t\t~s ~s = ~s(erl_element(~B), msg));~n", [T, param_name(H), Pname_type, N]))|Acc2],
+	    Acc21 = [lists:flatten(io_lib:format("\t\t~s ~s = ~s(erl_element(~B, msg));~n", [T, Pname, Pname_type, N]))|Acc2],
 	    Acc11 = [param_name(H) | Acc1]
     end,
     make_param(L, N + 1, Acc11, Acc21).
 
 bad_cmd(Command) ->
-    lists:member(Command, ["compose"]).
+    lists:member(Command, ["compose", "read"]).
 
 print_param(L) ->
     io:format("~s", [L]).
@@ -108,7 +111,8 @@ make_one(Row) ->
 		{Param_names, Param_lines} = make_param(chp2:param_vals(Row), 3), 
 		Parameters = util:join(",", Param_names),
 		io:format("\tif (command == \"" ++ Command ++ "\") {~n",[]),
-		io:format("\t\tImage image = image_list[ERL_INT_VALUE(erl_element(2, msg))];~n"),
+		io:format("\t\tint iid = ERL_INT_VALUE(erl_element(2, msg));~n", []),
+		io:format("\t\tImage image = image_list[iid];~n"), 
 		lists:foreach(fun print_param/1, Param_lines),
 		io:format("\t\timage.~s(~s);~n", [Command, Parameters]),
 		io:format("\t\timage_list[iid] = image;~n", []),

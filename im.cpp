@@ -94,16 +94,7 @@ int main(int argc,char **argv)
 	cout << "message is tuple" << endl;
 	string command((const char*)ERL_ATOM_PTR(erl_element(1, msg)));
 	cout << "command is " << command << endl;
-	if (command == "scale") {
-	  int iid = ERL_INT_VALUE(erl_element(2, msg));
-	  Image image = image_list[iid];
-	  int w = ERL_INT_VALUE(erl_element(3, msg));
-	  int h = ERL_INT_VALUE(erl_element(4, msg));
-	  image.scale(Geometry(w, h));
-	  image_list[iid] = image;
-	  erl_send(fd, pid, ok); 
-	}
-	else if (command == "read") {
+	if (command == "read") {
 	  //string file(decode_string(erl_element(2, msg)));
 	  string file((const char*) erl_iolist_to_string(erl_element(2, msg)));
 	  cout << "read file " << file << endl;
@@ -113,27 +104,8 @@ int main(int argc,char **argv)
 	  ETERM *reply = erl_mk_int(image_index++);
 	  erl_send(fd, pid, reply);
 	}
-	else if (command == "write") {
-	  Image image = image_list[ERL_INT_VALUE(erl_element(2, msg))];
-	  string file((const char*) erl_iolist_to_string(erl_element(3, msg)));
-	  cout << "write file " << file << endl;
-	  image.write(file);
-	  erl_send(fd, pid, ok); 
-	}
-	else if (command == "display") {
-	  Image image = image_list[ERL_INT_VALUE(erl_element(2, msg))];
-	  image.display();
-	  erl_send(fd, pid, ok); 
-	}
-	else if (command == "edge") {
-	  int iid = ERL_INT_VALUE(erl_element(2, msg));
-	  Image image = image_list[iid];
-	  unsigned int radius = ERL_INT_VALUE(erl_element(3, msg));
-	  image.edge(radius);
-	  image_list[iid] = image;
-	  erl_send(fd, pid, ok); 
-	}
-	else if (command == "quit") {
+#include "im_commands.h"
+	if (command == "quit") {
 	  exit = true;
 	  erl_send(fd, pid, ok); 
 	}
