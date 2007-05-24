@@ -30,7 +30,7 @@ rpc(Query) ->
 
 start() ->
     Image = read("girl.gif"),
-    scale(Image, 800, 800),
+    %scale(Image, 800, 800),
     display(Image),
     edge(Image, 5),
     display(Image).
