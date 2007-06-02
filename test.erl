@@ -2,38 +2,16 @@
 -export([start/0]).
 
 read(File) ->
-    rpc({read, File}).
-
-scale(Image, Width, Height) ->
-    rpc({scale, Image, Width, Height}).
-
-edge(Image, Radius) ->
-    rpc({edge, Image, Radius}).
-
-display(Image) ->
-    rpc({display, Image}).
-
-write(Image, File) ->
-    rpc({write, Image, File}).
-
-quit() ->
-    rpc({quit}).
-
-
-rpc(Query) ->
-    {any, c1@amddesktop} ! {self(), Query},
-    receive
-	Reply ->
-	    io:format("reply received ~p~n", [Reply]),
-	    Reply
-    end.
+    imagelib:rpc({read, File}).
 
 start() ->
-    Image = read("girl.gif"),
+    io:format("before read", []),
+    Image = read("test.jpg"),
     %scale(Image, 800, 800),
-    display(Image),
-    edge(Image, 5),
-    display(Image).
+    imagelib:display(Image),
+    imagelib:edge(Image, 5),
+    imagelib:negate(Image, 0),
+    imagelib:display(Image).
 
 
 
