@@ -1,5 +1,5 @@
 -module(build_server).
--export([make_all/4]).
+-export([make_all/5]).
 
 get_type("void") ->
     "";
@@ -78,12 +78,12 @@ param_name(H) ->
 	    string:strip(string:strip(R, both, $&), both, $_)
     end.
 
-make_param(L, N, Param_fun) ->
-    make_param(L, N, Param_fun, [], []).
+make_param(Out_file, L, N, Param_fun) ->
+    make_param(Out_file, L, N, Param_fun, [], []).
 
-make_param([], _, _, Acc1, Acc2) ->
+make_param(_, [], _, _, Acc1, Acc2) ->
     {lists:reverse(Acc1), lists:reverse(Acc2)};
-make_param([H|L], N, Param_fun, Acc1, Acc2) ->
+make_param(Out_file, [H|L], N, Param_fun, Acc1, Acc2) ->
     Pname = param_name(H),
     T = get_type(chp2:param_type(H)),
     case param_base_type(chp2:param_type(H)) of 
@@ -91,34 +91,34 @@ make_param([H|L], N, Param_fun, Acc1, Acc2) ->
 	    Acc21 = Acc2,
 	    Acc11 = Acc1;
 	Pname_type ->
-	    Acc21 = [lists:flatten(Param_fun(T, Pname, Pname_type, N))|Acc2],
+	    Acc21 = [lists:flatten(Param_fun(Out_file, T, Pname, Pname_type, N))|Acc2],
 	    Acc11 = [param_name(H) | Acc1]
     end,
-    make_param(L, N + 1, Param_fun, Acc11, Acc21).
+    make_param(Out_file, L, N + 1, Param_fun, Acc11, Acc21).
 
 bad_cmd(Command) ->
     lists:member(Command, ["compose", "read"]).
 
 
-make_one(Row, Body_fun, Param_fun, Bad_param_fun) ->
+make_one(Row, Out_file, Body_fun, Param_fun, Bad_param_fun) ->
     %io:format("~p~n", [Row]),
     Command = chp2:name(Row),
     try 
 	case bad_cmd(Command) of 
 	    false ->
-		{Param_names, Param_lines} = make_param(chp2:param_vals(Row), 3, Param_fun), 
-		Body_fun(Command, Param_names, Param_lines);
+		{Param_names, Param_lines} = make_param(Out_file, chp2:param_vals(Row), 3, Param_fun), 
+		Body_fun(Out_file, Command, Param_names, Param_lines);
 	    true ->
-		io:format("\t\t//~s not implemented~n", [Command])
+		Bad_param_fun(Out_file, Command, "not implemented")
 	end
     catch
 	throw:{"Bad param", Reason} ->
-	    Bad_param_fun(Command, Reason)
+	    Bad_param_fun(Out_file, Command, Reason)
     end.
 
-make_all(F, Body_fun, Param_fun, Bad_param_fun) ->
-    MakeFunc =  fun(Bf, Pf, Bpf) -> (fun(Row) -> make_one(Row, Bf, Pf, Bpf) end) end,
-    Func = MakeFunc(Body_fun, Param_fun, Bad_param_fun),
+make_all(F, Out_file, Body_fun, Param_fun, Bad_param_fun) ->
+    MakeFunc =  fun(Out, Bf, Pf, Bpf) -> (fun(Row) -> make_one(Row, Out, Bf, Pf, Bpf) end) end,
+    Func = MakeFunc(Out_file, Body_fun, Param_fun, Bad_param_fun),
     lists:foreach(Func, chp2:parse_file(F)).
 
 	      
