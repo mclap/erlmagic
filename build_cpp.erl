@@ -1,23 +1,29 @@
 -module(build_cpp).
 -export([test/0]).
 
-param_func(T, Pname, Pname_type, N) ->
+param_func(_Out_file, T, Pname, Pname_type, N) ->
     io_lib:format("\t\t~s ~s = ~s(erl_element(~B, msg));~n", [T, Pname, Pname_type, N]).
 
-body_func(Command, Param_names, Param_lines) ->
+body_func(Out_file, Command, Param_names, Param_lines) ->
     Parameters = util:join(",", Param_names),
-    io:format("\tif (command == \"" ++ Command ++ "\") {~n",[]),
-    io:format("\t\tint iid = ERL_INT_VALUE(erl_element(2, msg));~n", []),
-    io:format("\t\tImage image = image_list[iid];~n"), 
-    lists:foreach(fun(L) -> io:format("~s", [L]) end, Param_lines),
-    io:format("\t\timage.~s(~s);~n", [Command, Parameters]),
-    io:format("\t\timage_list[iid] = image;~n", []),
-    io:format("\t\terl_send(fd, pid, ok);~n",[]),
-    io:format("\t}~n",[]),
+    io:format(Out_file, "\tif (command == \"" ++ Command ++ "\") {~n",[]),
+    io:format(Out_file, "\t\tint iid = ERL_INT_VALUE(erl_element(2, msg));~n", []),
+    io:format(Out_file, "\t\tImage image = image_list[iid];~n",[]), 
+    lists:foreach(fun(L) -> io:format(Out_file, "~s", [L]) end, Param_lines),
+    io:format(Out_file, "\t\timage.~s(~s);~n", [Command, Parameters]),
+    io:format(Out_file, "\t\timage_list[iid] = image;~n", []),
+    io:format(Out_file, "\t\terl_send(fd, pid, ok);~n",[]),
+    io:format(Out_file, "\t}~n",[]),
     ok.
 
-bad_param_func(Command, Reason) ->
-    io:format("\t\t//~s not implemented because of parameter ~s~n", [Command, Reason]).
+bad_param_func(Out_file, Command, Reason) ->
+    io:format(Out_file, "\t\t//~s not implemented because of parameter ~s~n", [Command, Reason]).
 
 test() ->
-    build_server:make_all("image.h", fun body_func/3, fun param_func/4, fun bad_param_func/2).
+    case file:open("image_commands.h", write) of
+	{ok, Out_file} ->
+	    build_server:make_all("image.h", Out_file, fun body_func/4, fun param_func/5, fun bad_param_func/3);
+	{error, Reason} ->
+	    io:format("couldn't open file ~p~n", [Reason])
+    end.
+
