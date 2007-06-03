@@ -34,6 +34,7 @@ test() ->
 	    build_server:make_all("image.h", Out_file, fun body_func/4, fun param_func/5, fun bad_param_func/3);
 	{error, Reason} ->
 	    io:format("couldn't open file ~p~n", [Reason])
-    end.
+    end,
+    init:stop().
 
 

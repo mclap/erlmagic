@@ -20,10 +20,11 @@ bad_param_func(Out_file, Command, Reason) ->
     io:format(Out_file, "\t\t//~s not implemented because of parameter ~s~n", [Command, Reason]).
 
 test() ->
-    case file:open("image_commands.h", write) of
+    case file:open("im_commands.h", write) of
 	{ok, Out_file} ->
 	    build_server:make_all("image.h", Out_file, fun body_func/4, fun param_func/5, fun bad_param_func/3);
 	{error, Reason} ->
 	    io:format("couldn't open file ~p~n", [Reason])
-    end.
+    end,
+    init:stop().
 
