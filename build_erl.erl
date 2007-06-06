@@ -4,6 +4,14 @@
 param_func(_Out_file, _T, _Pname, _Pname_type,_N) ->
     "".
 
+one_param(Param) ->
+    Toks = string:tokens(Param, "()"),
+    case length(Toks) of
+	1 ->
+	    util:capitalize(hd(Toks));
+	2 ->
+	    util:join(",", lists:map(fun util:capitalize/1, string:tokens(hd(tl(Toks)), ",")))
+    end.
 
 body_func(Out_file, Command, Param_names, _Param_lines) ->
     %Parameters = util:join(",", Param_names),
@@ -11,7 +19,7 @@ body_func(Out_file, Command, Param_names, _Param_lines) ->
 		     0 ->
 			 "";
 		     _ ->
-			 ","++util:join(",",lists:map(fun util:capitalize/1, Param_names))
+			 ","++util:join(",",lists:map(fun one_param/1, Param_names))
 		 end,
     io:format(Out_file, "~s(Host, Image~s) ->~n", [Command, Parameters]),
     io:format(Out_file, "\trpc(Host, {~s,Image~s}).~n~n",[Command, Parameters]),

@@ -18,7 +18,7 @@ im: im_commands.h im.cpp
 im_commands.h: compile
 	${ERL} -pa '/home/bill/src/imerl' -s build_cpp test -noshell
 
-imagelib.beam: compile
+imagelib.beam: compile imagelib.in
 	${ERL} -pa '/home/bill/src/imerl' -s build_erl test -noshell
 	erlc -W imagelib.erl
 

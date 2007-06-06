@@ -15,7 +15,7 @@ param_base_type(T) ->
 	"Color" ->
 	    "??Color";
 	"Geometry" ->
-	    "??Geometry";
+	    "Geometry";
 	"Image" ->
 	    "??Image";
 	"ImageType" ->
@@ -89,12 +89,21 @@ make_param(Out_file, [H|L], N, Param_fun, Acc1, Acc2) ->
     case param_base_type(chp2:param_type(H)) of 
 	"void" ->
 	    Acc21 = Acc2,
-	    Acc11 = Acc1;
+	    Acc11 = Acc1,
+	    N_increment = 1;
+	"Geometry" ->
+	    Acc212 = [lists:flatten(Param_fun(Out_file, "double", "width", "ERL_FLOAT_VALUE", N))|Acc2],
+	    Acc21 = [lists:flatten(Param_fun(Out_file, "double", "height", "ERL_FLOAT_VALUE", N+1))|Acc212],
+	    N_increment = 2,
+	    %Acc112 = ["Geometry:width" | Acc1],
+	    %Acc11 = ["Geometry:height" | Acc112];
+	    Acc11 = ["Geometry(width,height)" | Acc1];
 	Pname_type ->
 	    Acc21 = [lists:flatten(Param_fun(Out_file, T, Pname, Pname_type, N))|Acc2],
-	    Acc11 = [param_name(H) | Acc1]
+	    Acc11 = [Pname | Acc1],
+	    N_increment = 1
     end,
-    make_param(Out_file, L, N + 1, Param_fun, Acc11, Acc21).
+    make_param(Out_file, L, N + N_increment, Param_fun, Acc11, Acc21).
 
 bad_cmd(Command) ->
     lists:member(Command, ["compose", "read"]).
