@@ -1,17 +1,19 @@
 -module(test).
 -export([start/0]).
 
-read(File) ->
-    imagelib:rpc({read, File}).
-
+	
+    
 start() ->
-    io:format("before read", []),
-    Image = read("test.jpg"),
+    Host = imagelib:start(),
+    Image = imagelib:read(Host, "test.jpg"),
+    io:format("Image = ~p~n", [Image]),
     %scale(Image, 800, 800),
-    imagelib:display(Image),
-    imagelib:edge(Image, 5),
-    imagelib:negate(Image, 0),
-    imagelib:display(Image).
+    imagelib:display(Host, Image),
+    imagelib:edge(Host, Image, 5),
+    imagelib:negate(Host, Image, 0),
+    imagelib:display(Host, Image).
+
+
 
 
 

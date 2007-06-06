@@ -53,16 +53,16 @@ int main(int argc,char **argv)
     if (erl_connect_init(identification_number, cookie, creation) == -1)
       erl_err_quit("erl_connect_init");
 
-    fprintf(stderr, "connected\n");
+    //fprintf(stderr, "connected\n");
     if ((sockfd = my_listen(PORT)) <= 0)
-      erl_err_quit("my_listen");
+      erl_err_quit("error: my_listen");
 
-    fprintf(stderr, "listening\n");
+    // fprintf(stderr, "listening\n");
 
     if ( erl_publish(PORT) == -1)
-      erl_err_quit("publish");
+      erl_err_quit("error: publish");
 
-    fprintf(stderr, "published\n");
+    // fprintf(stderr, "published\n");
 
     if ((fd = erl_accept(sockfd, &erlc)) == ERL_ERROR)
       erl_err_quit("erl_accept");
@@ -79,25 +79,27 @@ int main(int argc,char **argv)
       ErlMessage emsg;
       int rec = erl_receive_msg(fd, buf, BUFSIZE, &emsg);
       if (rec == ERL_MSG)
-	cout << "get message" << endl;
+	//cout << "get message" << endl;
+	;
       else if (rec == ERL_TICK) {
-	cout << "tick received" << endl;
+	//cout << "tick received" << endl;
 	continue;
       }
       else if (rec == ERL_ERROR)
-	cout << "msg error " << errno << endl;
+	//cout << "msg error " << errno << endl;
+	;
       
 
       ETERM *pid = erl_element(1, emsg.msg);
       ETERM *msg = erl_element(2, emsg.msg);
       if (ERL_IS_TUPLE(msg)) {
-	cout << "message is tuple" << endl;
+	//cout << "message is tuple" << endl;
 	string command((const char*)ERL_ATOM_PTR(erl_element(1, msg)));
-	cout << "command is " << command << endl;
+	//cout << "command is " << command << endl;
 	if (command == "read") {
 	  //string file(decode_string(erl_element(2, msg)));
 	  string file((const char*) erl_iolist_to_string(erl_element(2, msg)));
-	  cout << "read file " << file << endl;
+	  //cout << "read file " << file << endl;
 	  Image *image = new Image();
 	  image->read(file);
 	  image_list.push_back(*image);

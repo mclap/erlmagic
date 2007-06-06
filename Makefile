@@ -8,7 +8,7 @@
 
 ERL = erl -boot start_clean
 
-MODS = util build_cpp build_erl build_server 
+MODS = test util build_cpp build_erl build_server 
 
 all: im imagelib.beam
 
@@ -20,6 +20,7 @@ im_commands.h: compile
 
 imagelib.beam: compile
 	${ERL} -pa '/home/bill/src/imerl' -s build_erl test -noshell
+	erlc -W imagelib.erl
 
 compile: ${MODS:%=%.beam}
 
