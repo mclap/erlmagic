@@ -1,0 +1,16 @@
+-module(imagelib).
+-compile(export_all).
+
+rpc(Host, Query) ->
+    {any, Host} ! {self(), Query},
+    receive
+	Reply ->
+	    Reply
+    end.
+
+start() ->
+    {ok, Hostname} = inet:gethostname(),
+    list_to_atom("c1@" ++ Hostname).
+
+read(Host, File) ->
+    rpc(Host, {read, File}).

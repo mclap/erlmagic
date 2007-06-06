@@ -1,5 +1,5 @@
 -module(build_cpp).
--export([test/0]).
+-export([test/0, start/0]).
 
 param_func(_Out_file, T, Pname, Pname_type, N) ->
     io_lib:format("\t\t~s ~s = ~s(erl_element(~B, msg));~n", [T, Pname, Pname_type, N]).
@@ -19,12 +19,18 @@ body_func(Out_file, Command, Param_names, Param_lines) ->
 bad_param_func(Out_file, Command, Reason) ->
     io:format(Out_file, "\t\t//~s not implemented because of parameter ~s~n", [Command, Reason]).
 
+% test is for interactive use
 test() ->
     case file:open("im_commands.h", write) of
 	{ok, Out_file} ->
 	    build_server:make_all("image.h", Out_file, fun body_func/4, fun param_func/5, fun bad_param_func/3);
 	{error, Reason} ->
 	    io:format("couldn't open file ~p~n", [Reason])
-    end,
+    end.
+
+% start is for running in a script.
+start() ->
+    test(),
     init:stop().
+
 
