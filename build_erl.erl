@@ -22,7 +22,7 @@ body_func(Out_file, Command, Param_names, _Param_lines) ->
 			 ","++util:join(",",lists:map(fun one_param/1, Param_names))
 		 end,
     io:format(Out_file, "~s(Host, Image~s) ->~n", [Command, Parameters]),
-    io:format(Out_file, "\trpc(Host, {~s,Image~s}).~n~n",[Command, Parameters]),
+    io:format(Out_file, "\trpc(Host, {~s,Image~s}).~n~n",[util:make_command_name(Command, Param_names), Parameters]),
     ok.
 
 bad_param_func(Out_file, Command, Reason) ->

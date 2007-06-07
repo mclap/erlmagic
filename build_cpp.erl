@@ -5,8 +5,9 @@ param_func(_Out_file, T, Pname, Pname_type, N) ->
     io_lib:format("\t\t~s ~s = ~s(erl_element(~B, msg));~n", [T, Pname, Pname_type, N]).
 
 body_func(Out_file, Command, Param_names, Param_lines) ->
+    Command_name = util:make_command_name(Command, Param_names),
     Parameters = util:join(",", Param_names),
-    io:format(Out_file, "\telse if (command == \"" ++ Command ++ "\") {~n",[]),
+    io:format(Out_file, "\telse if (command == \"" ++ Command_name ++ "\") {~n",[]),
     io:format(Out_file, "\t\tint iid = ERL_INT_VALUE(erl_element(2, msg));~n", []),
     io:format(Out_file, "\t\tImage image = image_list[iid];~n",[]), 
     lists:foreach(fun(L) -> io:format(Out_file, "~s", [L]) end, Param_lines),

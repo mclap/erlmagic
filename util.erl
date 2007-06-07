@@ -1,5 +1,5 @@
 -module(util).
--export([join/2, capitalize/1, test_join/0]).
+-export([join/2, capitalize/1, make_command_name/2, test_join/0]).
 
 join(C, L) ->
     join(C, L, []).
@@ -18,6 +18,9 @@ capitalize(Word) ->
        true ->
 	    Word
     end.
+
+make_command_name(Command, Params) ->
+    Command ++ "_" ++ integer_to_list(length(Params)).
 
 test_join() ->
     L = ["this", "that", "the", "other"],
