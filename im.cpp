@@ -36,6 +36,13 @@ int my_listen(int port) {
   return listen_fd;
 }
 
+vector <Image> image_list;
+
+Image &get_image(int param_num) 
+{
+  int iid = ERL_INT_VALUE(erl_element(param_num, msg));
+  return image_list[iid];
+}
 
 int main(int argc,char **argv)
 {
@@ -69,7 +76,6 @@ int main(int argc,char **argv)
 
     fprintf(stderr, "accepting on fd %i\n", fd);
     int image_index = 0;
-    vector <Image> image_list;
 
     ETERM *ok = erl_mk_atom("ok");
     bool exit = false;

@@ -13,11 +13,11 @@ param_base_type(T) ->
 	"ChannelType" ->
 	    "??ChannelType";
 	"Color" ->
-	    "??Color";
+	    "Color";
 	"Geometry" ->
 	    "Geometry";
 	"Image" ->
-	    "??Image";
+	    "Image";
 	"ImageType" ->
 	    "??ImageType";
 	"MagickEvaluateOperator" ->
@@ -92,14 +92,21 @@ make_param(Out_file, [H|L], N, Param_fun, Acc1, Acc2) ->
 	    Acc11 = Acc1,
 	    N_increment = 1;
 	"Geometry" ->
-	    Width_name = Pname ++ "width",
-	    Height_name = Pname ++ "height",
+	    Width_name = Pname ++ "_width",
+	    Height_name = Pname ++ "_height",
 	    Acc212 = [lists:flatten(Param_fun(Out_file, "int", Width_name, "ERL_INT_VALUE", N))|Acc2],
 	    Acc21 = [lists:flatten(Param_fun(Out_file, "int", Height_name, "ERL_INT_VALUE", N+1))|Acc212],
 	    N_increment = 2,
-	    %Acc112 = ["Geometry:width" | Acc1],
-	    %Acc11 = ["Geometry:height" | Acc112];
 	    Acc11 = ["Geometry(" ++ Width_name ++ "," ++ Height_name ++ ")" | Acc1];
+	"Color" ->
+	    Red_name = Pname ++ "_red",
+	    Green_name = Pname ++ "_green",
+	    Blue_name = Pname ++ "_blue",
+	    Acc212 = [lists:flatten(Param_fun(Out_file, "double", Red_name, "ERL_FLOAT_VALUE", N))|Acc2],
+	    Acc213 = [lists:flatten(Param_fun(Out_file, "double", Green_name, "ERL_FLOAT_VALUE", N+1))|Acc212],
+	    Acc21 = [lists:flatten(Param_fun(Out_file, "double", Blue_name, "ERL_FLOAT_VALUE", N+2))|Acc213],
+	    N_increment = 3,
+	    Acc11 = ["ColorRGB(" ++ Red_name ++ "," ++ Green_name ++ "," ++ Blue_name ++ ")" | Acc1];
 	Pname_type ->
 	    Acc21 = [lists:flatten(Param_fun(Out_file, T, Pname, Pname_type, N))|Acc2],
 	    Acc11 = [Pname | Acc1],
