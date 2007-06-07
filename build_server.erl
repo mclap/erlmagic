@@ -92,12 +92,14 @@ make_param(Out_file, [H|L], N, Param_fun, Acc1, Acc2) ->
 	    Acc11 = Acc1,
 	    N_increment = 1;
 	"Geometry" ->
-	    Acc212 = [lists:flatten(Param_fun(Out_file, "double", "width", "ERL_FLOAT_VALUE", N))|Acc2],
-	    Acc21 = [lists:flatten(Param_fun(Out_file, "double", "height", "ERL_FLOAT_VALUE", N+1))|Acc212],
+	    Width_name = Pname ++ "width",
+	    Height_name = Pname ++ "height",
+	    Acc212 = [lists:flatten(Param_fun(Out_file, "int", Width_name, "ERL_INT_VALUE", N))|Acc2],
+	    Acc21 = [lists:flatten(Param_fun(Out_file, "int", Height_name, "ERL_INT_VALUE", N+1))|Acc212],
 	    N_increment = 2,
 	    %Acc112 = ["Geometry:width" | Acc1],
 	    %Acc11 = ["Geometry:height" | Acc112];
-	    Acc11 = ["Geometry(width,height)" | Acc1];
+	    Acc11 = ["Geometry(" ++ Width_name ++ "," ++ Height_name ++ ")" | Acc1];
 	Pname_type ->
 	    Acc21 = [lists:flatten(Param_fun(Out_file, T, Pname, Pname_type, N))|Acc2],
 	    Acc11 = [Pname | Acc1],

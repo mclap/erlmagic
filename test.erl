@@ -9,7 +9,8 @@ start() ->
     io:format("Image = ~p~n", [Image]),
     imagelib:scale(Host, Image, 800, 800),
     imagelib:display(Host, Image),
-    imagelib:edge(Host, Image, 5),
+    imagelib:edge(Host, Image, 10),
+    imagelib:display(Host, Image),
     imagelib:negate(Host, Image, 0),
     imagelib:display(Host, Image).
 

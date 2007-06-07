@@ -82,7 +82,6 @@
     void            read ( const unsigned int width_, const unsigned int height_, const std::string &map_, const StorageType  type_, const void        *pixels_ );
     void            reduceNoise ( void );
     void            reduceNoise ( const double order_ );
-    void            roll ( const Geometry &roll_ );
     void            roll ( const unsigned int columns_, const unsigned int rows_ );
     void            rotate ( const double degrees_ );
     void            sample ( const Geometry &geometry_ );
