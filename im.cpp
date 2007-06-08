@@ -37,11 +37,17 @@ int my_listen(int port) {
 }
 
 vector <Image> image_list;
+int last_image = 0;
 
-Image &get_image(int param_num) 
+Image &get_image(int param_num, ETERM* msg) 
 {
-  int iid = ERL_INT_VALUE(erl_element(param_num, msg));
-  return image_list[iid];
+  last_image = ERL_INT_VALUE(erl_element(param_num, msg));
+  return image_list[last_image];
+}
+
+Image put_image(Image& image) 
+{
+  image_list[last_image] = image;
 }
 
 int main(int argc,char **argv)

@@ -2,7 +2,7 @@
 -export([test/0, start/0]).
 
 param_func(_Out_file, "Image", Pname, _, N) ->
-    io_lib:format("\t\tImage& ~s = get_image(~B);~n",[Pname, N]);
+    io_lib:format("\t\tImage& ~s = get_image(~B, msg);~n",[Pname, N]);
 param_func(_Out_file, T, Pname, Pname_type, N) ->
     io_lib:format("\t\t~s ~s = ~s(erl_element(~B, msg));~n", [T, Pname, Pname_type, N]).
 
@@ -11,10 +11,10 @@ body_func(Out_file, Command, Param_names, Param_lines) ->
     Command_name = util:make_command_name(Command, Param_names),
     Parameters = util:join(",", Param_names),
     io:format(Out_file, "\telse if (command == \"" ++ Command_name ++ "\") {~n",[]),
-    io:format(Out_file, "\t\tImage& image = get_image(2);~n",[]), 
+    io:format(Out_file, "\t\tImage& image = get_image(2, msg);~n",[]), 
     lists:foreach(fun(L) -> io:format(Out_file, "~s", [L]) end, Param_lines),
     io:format(Out_file, "\t\timage.~s(~s);~n", [Command, Parameters]),
-    io:format(Out_file, "\t\timage_list[iid] = image;~n", []),
+    io:format(Out_file, "\t\tput_image(image);~n", []),
     io:format(Out_file, "\t\terl_send(fd, pid, ok);~n",[]),
     io:format(Out_file, "\t}~n",[]),
     ok.

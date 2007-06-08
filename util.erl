@@ -1,7 +1,9 @@
 -module(util).
 -export([join/2, capitalize/1, make_command_name/2, test_join/0]).
 
-join([F|L], Sep) ->
+join(_, []) ->
+    "";
+join(Sep, [F|L]) ->
     lists:foldl(fun(X, Acc) -> Acc ++ Sep ++ X end, F, L).
 
 capitalize([]) ->
