@@ -8,7 +8,7 @@
 
 ERL = erl -boot start_clean
 
-MODS = test util build_cpp build_erl build_server 
+MODS = chp2 test util build_cpp build_erl build_server 
 
 all: im imagelib.beam
 

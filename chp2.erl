@@ -24,7 +24,9 @@ params(L) ->
     Params = string:tokens(L, ","),
     lists:map(fun param/1, Params).
     
-		       
+
+parse("//"++_) ->
+    {"//", "","",""};
 parse(L) ->
     case string:tokens(L, "()") of 
 	[Type_Name|[Rest]] ->

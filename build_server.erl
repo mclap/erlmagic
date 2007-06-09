@@ -115,7 +115,7 @@ make_param(Out_file, [H|L], N, Param_fun, Acc1, Acc2) ->
     make_param(Out_file, L, N + N_increment, Param_fun, Acc11, Acc21).
 
 bad_cmd(Command) ->
-    lists:member(Command, ["compose", "read"]).
+    lists:member(Command, ["//", "compose", "read"]).
 
 
 make_one(Row, Out_file, Body_fun, Param_fun, Bad_param_fun) ->

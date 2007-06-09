@@ -47,6 +47,7 @@ Image &get_image(int param_num, ETERM* msg)
 
 Image put_image(Image& image) 
 {
+  cout << "put_image last_image = " << last_image << endl;
   image_list[last_image] = image;
 }
 
