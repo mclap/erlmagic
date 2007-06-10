@@ -14,7 +14,6 @@ body_func(Out_file, Command, Param_names, Param_lines) ->
     io:format(Out_file, "\t\tImage& image = get_image(2, msg);~n",[]), 
     lists:foreach(fun(L) -> io:format(Out_file, "~s", [L]) end, Param_lines),
     io:format(Out_file, "\t\timage.~s(~s);~n", [Command, Parameters]),
-    io:format(Out_file, "\t\tput_image(image);~n", []),
     io:format(Out_file, "\t\terl_send(fd, pid, ok);~n",[]),
     io:format(Out_file, "\t}~n",[]),
     ok.
