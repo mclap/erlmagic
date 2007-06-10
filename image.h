@@ -18,7 +18,7 @@
     void            compose (const CompositeOperator compose_);
     CompositeOperator compose ( void ) const;
     bool            compare ( const Image &reference_ );
-    void            composite ( const Image &compositeImage_, const int xOffset_, const int yOffset_, const CompositeOperator compose_ = InCompositeOp );
+//    void            composite ( const Image &compositeImage_, const int xOffset_, const int yOffset_, const CompositeOperator compose_ = InCompositeOp );
     void            composite ( const Image &compositeImage_, const Geometry &offset_, const CompositeOperator compose_ = InCompositeOp );
     void            composite ( const Image &compositeImage_, const GravityType gravity_, const CompositeOperator compose_ = InCompositeOp );
     void            contrast ( const unsigned int sharpen_ );

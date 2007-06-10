@@ -51,7 +51,7 @@ param_base_type(T) ->
 	"GravityType" ->
 	    "??GravityType";
 	"CompositeOperator" ->
-	    "??CompositeOperator";
+	    "CompositeOperator";
 	"DrawableAffine" ->
 	    "??DrawableAffine";
 	"NoiseType" ->
@@ -107,6 +107,10 @@ make_param(Out_file, [H|L], N, Param_fun, Acc1, Acc2) ->
 	    Acc21 = [lists:flatten(Param_fun(Out_file, "double", Blue_name, "ERL_FLOAT_VALUE", N+2))|Acc213],
 	    N_increment = 3,
 	    Acc11 = ["ColorRGB(" ++ Red_name ++ "," ++ Green_name ++ "," ++ Blue_name ++ ")" | Acc1];
+	"CompositeOperator" ->
+	    Acc21 = [lists:flatten(Param_fun(Out_file, "string", Pname, "erl_iolist_to_string", N))|Acc2],
+	    Acc11 = ["get_composite(" ++ Pname ++ ")" | Acc1],
+	    N_increment = 1;
 	Pname_type ->
 	    Acc21 = [lists:flatten(Param_fun(Out_file, T, Pname, Pname_type, N))|Acc2],
 	    Acc11 = [Pname | Acc1],

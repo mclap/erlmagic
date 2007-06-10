@@ -1,6 +1,5 @@
 -module(test).
--export([test1/0, test2/0, test3/0]).
-
+-compile(export_all).
 
 init() ->	
     Host = imagelib:start(),
@@ -27,7 +26,17 @@ test3() ->
     imagelib:reduceNoise(Host, Image),
     imagelib:display(Host, Image).
 
-
+test4() ->
+    {Host, Image} = init(),
+    Image2 = imagelib:read(Host, "test.jpg"),
+    io:format("Image2 = ~p~n", [Image2]),
+    imagelib:scale(Host, Image2, 800, 800),
+    imagelib:edge(Host, Image, 10),
+    imagelib:display(Host, Image),
+    imagelib:reduceNoise(Host, Image2),
+    imagelib:display(Host, Image2),
+    imagelib:composite(Host, Image, Image2, 0, 0, "AddCompositeOp"),
+    imagelib:display(Host, Image).
 
 
 

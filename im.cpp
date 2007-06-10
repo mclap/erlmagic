@@ -14,6 +14,8 @@
 using namespace std;
 using namespace Magick;
 
+#include "composite_def.cpp"
+
 int my_listen(int port) {
   int listen_fd;
   struct sockaddr_in addr;
@@ -130,3 +132,4 @@ int main(int argc,char **argv)
   }
   return 0;
 }
+
