@@ -28,16 +28,27 @@ test3() ->
 
 test4() ->
     {Host, Image} = init(),
-    Image2 = imagelib:read(Host, "test.jpg"),
+    Image2 = imagelib:read(Host, "test2.jpg"),
     io:format("Image2 = ~p~n", [Image2]),
     imagelib:scale(Host, Image2, 800, 800),
-    imagelib:edge(Host, Image, 10),
-    imagelib:display(Host, Image),
-    imagelib:reduceNoise(Host, Image2),
     imagelib:display(Host, Image2),
     imagelib:composite(Host, Image, Image2, 0, 0, "AddCompositeOp"),
+    imagelib:display(Host, Image),
+    imagelib:composite(Host, Image, Image2, 0, 0, "MinusCompositeOp"),
     imagelib:display(Host, Image).
 
+test_del(0, _) ->
+    ok;
+test_del(N, Host) ->
+    Image2 = imagelib:read(Host, "test2.jpg"),
+    imagelib:scale(Host, Image2, 800, 800),
+    imagelib:display(Host, Image2),
+    imagelib:delete(Host, Image2),
+    test_del(N-1, Host).
+
+test5() ->
+    {Host, _} = init(),
+    test_del(10, Host).
 
 
 

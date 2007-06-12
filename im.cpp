@@ -47,6 +47,15 @@ Image &get_image(int param_num, ETERM* msg)
   return image_list[last_image];
 }
 
+void del_image(int param_num, ETERM* msg)
+{
+  int idx = ERL_INT_VALUE(erl_element(param_num, msg));
+  vector<Image>::iterator it = image_list.begin(); 
+  for(int i = 0; i < idx; i++, it++) {
+  }
+  image_list.erase(it);
+}
+
 int main(int argc,char **argv)
 {
   int sockfd;
@@ -115,6 +124,11 @@ int main(int argc,char **argv)
 	  ETERM *reply = erl_mk_int(image_index++);
 	  erl_send(fd, pid, reply);
 	}
+	else if (command == "delete") {
+	  del_image(2, msg);
+	  erl_send(fd, pid, ok);
+	}
+
 #include "im_commands.h"
 	if (command == "quit") {
 	  exit = true;
