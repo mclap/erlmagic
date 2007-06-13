@@ -1,6 +1,6 @@
 Goal: implement the example as PerlMagick's example.pl http://www.imagemagick.org/source/examples.pl
 
-- enhance handling of Geometry (need to be able to specify size and place as opposed to only place. Probably should just implement the string interface.
+- enhance handling of Geometry (need to be able to specify size and place as opposed to only place. Probably should just implement the string interface.  DONE.
 - Montage
 - Implement NoiseType
 - Implement ChannelType

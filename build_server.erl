@@ -92,12 +92,9 @@ make_param(Out_file, [H|L], N, Param_fun, Acc1, Acc2) ->
 	    Acc11 = Acc1,
 	    N_increment = 1;
 	"Geometry" ->
-	    Width_name = Pname ++ "_width",
-	    Height_name = Pname ++ "_height",
-	    Acc212 = [lists:flatten(Param_fun(Out_file, "int", Width_name, "ERL_INT_VALUE", N))|Acc2],
-	    Acc21 = [lists:flatten(Param_fun(Out_file, "int", Height_name, "ERL_INT_VALUE", N+1))|Acc212],
-	    N_increment = 2,
-	    Acc11 = ["Geometry(" ++ Width_name ++ "," ++ Height_name ++ ")" | Acc1];
+	    Acc21 = [lists:flatten(Param_fun(Out_file, "string", Pname, "erl_iolist_to_string", N))|Acc2],
+	    N_increment = 1,
+	    Acc11 = ["Geometry(" ++ Pname ++ ")" | Acc1];
 	"Color" ->
 	    Red_name = Pname ++ "_red",
 	    Green_name = Pname ++ "_green",
