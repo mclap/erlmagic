@@ -15,5 +15,8 @@ start() ->
 read(Host, File) ->
     rpc(Host, {read, File}).
 
+write(Host, File) ->
+    rpc(Host, {write, File}).
+
 delete(Host, Image) ->
     rpc(Host, {delete, Image}).

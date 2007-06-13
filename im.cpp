@@ -109,19 +109,22 @@ int main(int argc,char **argv)
       ETERM *pid = erl_element(1, emsg.msg);
       ETERM *msg = erl_element(2, emsg.msg);
       if (ERL_IS_TUPLE(msg)) {
-	//cout << "message is tuple" << endl;
 	string command((const char*)ERL_ATOM_PTR(erl_element(1, msg)));
-	//cout << "command is " << command << endl;
 	if (command == "read") {
-	  //string file(decode_string(erl_element(2, msg)));
 	  string file((const char*) erl_iolist_to_string(erl_element(2, msg)));
-	  //cout << "read file " << file << endl;
 	  Image image;
 	  image.read(file);
 	  image_map[image_index] = image;
 	  ETERM *reply = erl_mk_int(image_index++);
 	  erl_send(fd, pid, reply);
 	}
+	else if (command == "write") {
+	  Image& image = get_image(2, msg);
+	  string file((const char*) erl_iolist_to_string(erl_element(3, msg)));
+	  image.write(file);
+	  erl_send(fd, pid, ok);
+	}
+
 	else if (command == "delete") {
 	  del_image(2, msg);
 	  erl_send(fd, pid, ok);

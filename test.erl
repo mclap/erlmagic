@@ -52,5 +52,14 @@ test5() ->
     {Host, _} = init(),
     test_del(10, Host).
 
+% test writing an image
+test6() ->
+    {Host, Image} = init(),
+    imagelib:edge(Host, Image, 10),
+    imagelib:display(Host, Image),
+    imagelib:negate(Host, Image, 0),
+    imagelib:write(Host, Image, "test6.jpg").
+
+
 
 
