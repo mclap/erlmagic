@@ -1,1 +1,18 @@
-1. Add ability to distinquish which version of a function is being invoked. See test3. There are two reduceNoise methods. Only the first will be called.
+Goal: implement the example as PerlMagick's example.pl http://www.imagemagick.org/source/examples.pl
+
+- enhance handling of Geometry (need to be able to specify size and place as opposed to only place. Probably should just implement the string interface.
+- Montage
+- Implement NoiseType
+- Implement ChannelType
+- contraststretch?
+- convolve
+- Implement Drawables.
+- Fx?
+- read gradient.
+- quantize parameters for monochrome?
+- motionblur
+- read plasma:fractal?
+- radialblur
+- resize must be scale
+- sigmoidalcontrast?
+- vignette?
