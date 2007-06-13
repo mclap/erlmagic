@@ -38,22 +38,20 @@ int my_listen(int port) {
   return listen_fd;
 }
 
-vector <Image> image_list;
+map <int, Image> image_map;
 int last_image = 0;
 
 Image &get_image(int param_num, ETERM* msg) 
 {
   last_image = ERL_INT_VALUE(erl_element(param_num, msg));
-  return image_list[last_image];
+  return image_map[last_image];
 }
 
 void del_image(int param_num, ETERM* msg)
 {
   int idx = ERL_INT_VALUE(erl_element(param_num, msg));
-  vector<Image>::iterator it = image_list.begin(); 
-  for(int i = 0; i < idx; i++, it++) {
-  }
-  image_list.erase(it);
+  map<int, Image>::iterator it = image_map.find(idx); 
+  image_map.erase(it);
 }
 
 int main(int argc,char **argv)
@@ -118,9 +116,9 @@ int main(int argc,char **argv)
 	  //string file(decode_string(erl_element(2, msg)));
 	  string file((const char*) erl_iolist_to_string(erl_element(2, msg)));
 	  //cout << "read file " << file << endl;
-	  Image *image = new Image();
-	  image->read(file);
-	  image_list.push_back(*image);
+	  Image image;
+	  image.read(file);
+	  image_map[image_index] = image;
 	  ETERM *reply = erl_mk_int(image_index++);
 	  erl_send(fd, pid, reply);
 	}

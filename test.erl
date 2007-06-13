@@ -41,7 +41,9 @@ test_del(0, _) ->
     ok;
 test_del(N, Host) ->
     Image2 = imagelib:read(Host, "test2.jpg"),
+    io:format("Image2 = ~p~n", [Image2]),
     imagelib:scale(Host, Image2, 800, 800),
+    io:format("Image2 after scale = ~p~n", [Image2]),
     imagelib:display(Host, Image2),
     imagelib:delete(Host, Image2),
     test_del(N-1, Host).
