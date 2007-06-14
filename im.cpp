@@ -56,7 +56,14 @@ void del_image(int param_num, ETERM* msg)
 
 vector<Image> getImageVector(int param_num, ETERM* msg)
 {
-  ETERM *elist = erl_
+  vector<Image> rval;
+  ETERM *list = erl_element(param_num, msg);
+  for (hd = erl_hd(list); hd != NULL; hd = erl_hd(list)) {
+    Image& image = image_map[ERL_INT_VALUE(hd)];
+    rval.push_back(image);
+    list = erl_tl(list);
+  }
+  return rval;
 }
 
 int main(int argc,char **argv)
@@ -130,7 +137,12 @@ int main(int argc,char **argv)
 	  erl_send(fd, pid, ok);
 	}
 	else if (command == "montageImages") {
-	  vector<Image> montage = getImageVector(2, msg);
+	  vector<Image> imageList = getImageVector(2, msg);
+	  string file((const char*) erl_iolist_to_string(erl_element(3, msg)));
+	  vector<Image> montage;
+	  montageFramed motageOpts;
+	  montageImages( &montage, imageList.begin(), imageList.end(), montageOpts );
+	  writeImages(montage.begin(), montage.end(), file);
 	}
 	else if (command == "delete") {
 	  del_image(2, msg);
