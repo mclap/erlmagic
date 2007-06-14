@@ -20,3 +20,6 @@ write(Host, File) ->
 
 delete(Host, Image) ->
     rpc(Host, {delete, Image}).
+
+montageImages(Host, ImageList, File) ->
+    rpc(Host, {montageImages, ImageList, File}).

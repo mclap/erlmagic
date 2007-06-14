@@ -14,17 +14,21 @@ test1() ->
     imagelib:edge(Host, Image, 10),
     imagelib:display(Host, Image),
     imagelib:negate(Host, Image, 0),
-    imagelib:display(Host, Image).
+    imagelib:display(Host, Image),
+    Image.
+
 
 test2() ->
     {Host, Image} = init(),
     imagelib:roll(Host, Image, 100, 100),
-    imagelib:display(Host, Image).
+    imagelib:display(Host, Image),
+    Image.
 
 test3() ->
     {Host, Image} = init(),
     imagelib:reduceNoise(Host, Image),
-    imagelib:display(Host, Image).
+    imagelib:display(Host, Image),
+    Image.
 
 test4() ->
     {Host, Image} = init(),
@@ -35,7 +39,8 @@ test4() ->
     imagelib:composite(Host, Image, Image2, 0, 0, "AddCompositeOp"),
     imagelib:display(Host, Image),
     imagelib:composite(Host, Image, Image2, 0, 0, "MinusCompositeOp"),
-    imagelib:display(Host, Image).
+    imagelib:display(Host, Image),
+    Image.
 
 test_del(0, _) ->
     ok;
@@ -59,6 +64,14 @@ test6() ->
     imagelib:display(Host, Image),
     imagelib:negate(Host, Image, 0),
     imagelib:write(Host, Image, "test6.jpg").
+
+% montage test
+test7() ->
+    {Host, Image} = init(),
+    Image2 = imagelib:read(Host, "test2.jpg"),
+    imagelib:montageImages([Image, Image2], "montage.jpg"),
+    Montage = imagelib:read(Host, "montage.jpg"),
+    imagelib:display(Host, Montage).
 
 
 

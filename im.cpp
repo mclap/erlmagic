@@ -54,6 +54,11 @@ void del_image(int param_num, ETERM* msg)
   image_map.erase(it);
 }
 
+vector<Image> getImageVector(int param_num, ETERM* msg)
+{
+  ETERM *elist = erl_
+}
+
 int main(int argc,char **argv)
 {
   int sockfd;
@@ -124,7 +129,9 @@ int main(int argc,char **argv)
 	  image.write(file);
 	  erl_send(fd, pid, ok);
 	}
-
+	else if (command == "montageImages") {
+	  vector<Image> montage = getImageVector(2, msg);
+	}
 	else if (command == "delete") {
 	  del_image(2, msg);
 	  erl_send(fd, pid, ok);
