@@ -8,7 +8,7 @@ init() ->
     imagelib:scale(Host, Image, "20%"),
     {Host, Image}.
 
-adaptiveTheshold(Host, Image) ->
+adaptiveThreshold(Host, Image) ->
     Ex = imagelib:clone(Host, Image),
     imagelib:adaptiveThreshold(Host, Image, 5, 5, 5),
     imagelib:label(Host, Image, "adaptiveTheshold"),
@@ -279,6 +279,10 @@ wave(Host, Image) ->
 
 start() ->
     {Host, Image} = init(),
-    Funs = [adaptiveTheshold, annotate, blur, border, charcoal, chop, composite, contrast, crop, despeckle, edge, emboss, enhance, equalize, erase, flip, flop, gamma, gaussianBlur, implode, level, medianFilter, modulate, negate, normalize, oilPaint, quantize, raise, reduceNoise, roll, rotate, sample, scale, segment, shade, sharpen, shave, shear, solarize, spread, swirl, unsharpmask, wave],
+    Funs = [fun adaptiveThreshold/2, fun annotate/2, fun blur/2, fun border/2, fun charcoal/2, fun chop/2, fun composite/2, fun contrast/2,
+	    fun crop/2, fun despeckle/2, fun edge/2, fun emboss/2, fun enhance/2, fun equalize/2, fun erase/2, fun flip/2, fun flop/2, 
+	    fun gamma/2, fun gaussianBlur/2, fun implode/2, fun level/2, fun medianFilter/2, fun modulate/2, fun negate/2, fun normalize/2,
+	    fun oilPaint/2, fun quantize/2, fun raise/2, fun reduceNoise/2, fun roll/2, fun rotate/2, fun sample/2, fun scale/2, fun segment/2,
+	    fun shade/2, fun sharpen/2, fun shave/2, fun shear/2, fun solarize/2, fun spread/2, fun swirl/2, fun unsharpmask/2, fun wave/2],
     Montage = imagelib:montageImages(Host, [X(Host, Image) || X <- Funs], "example.jpg"),
     imagelib:display(Host, Montage).
