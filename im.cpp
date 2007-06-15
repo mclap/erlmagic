@@ -144,6 +144,14 @@ int main(int argc,char **argv)
 	  montageImages( &montage, imageList.begin(), imageList.end(), montageOpts );
 	  writeImages(montage.begin(), montage.end(), file);
 	}
+	else if (command == "clone") {
+	  Image& image = get_image(2, msg);
+	  Image clone = image;
+	  image_map[image_index] = clone;
+	  ETERM *reply = erl_mk_int(image_index++);
+	  erl_send(fd, pid, reply);
+	  
+	}
 	else if (command == "delete") {
 	  del_image(2, msg);
 	  erl_send(fd, pid, ok);

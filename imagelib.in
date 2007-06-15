@@ -23,3 +23,6 @@ delete(Host, Image) ->
 
 montageImages(Host, ImageList, File) ->
     rpc(Host, {montageImages, ImageList, File}).
+
+clone(Host, Image) ->
+    rpc(Host, {clone, Image}).
