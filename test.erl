@@ -5,7 +5,7 @@ init() ->
     Host = imagelib:start(),
     Image = imagelib:read(Host, "test.jpg"),
     io:format("Image = ~p~n", [Image]),
-    imagelib:scale(Host, Image, "50%"),
+    imagelib:scale(Host, Image, "20%"),
     imagelib:display(Host, Image),
     {Host, Image}.
     
@@ -60,18 +60,14 @@ test5() ->
 % test writing an image
 test6() ->
     {Host, Image} = init(),
-    imagelib:edge(Host, Image, 10),
     imagelib:display(Host, Image),
-    imagelib:negate(Host, Image, 0),
     imagelib:write(Host, Image, "test6.jpg").
 
 % montage test
 test7() ->
     {Host, Image} = init(),
     Image2 = imagelib:read(Host, "test2.jpg"),
-    io:format("after image2", []),
-    imagelib:montageImages(Host, [Image, Image2], "montage.jpg"),
-    io:format("after montage", []),
+    imagelib:montageImages(Host, [Image, Image2], "2x1", "montage.jpg"),
     Montage = imagelib:read(Host, "montage.jpg"),
     imagelib:display(Host, Montage).
 

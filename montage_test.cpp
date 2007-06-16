@@ -40,7 +40,8 @@ int main( int /*argc*/, char **argv)
     montageOpts.penColor( "yellow" );
     montageOpts.shadow( true );
     montageOpts.texture( "granite:" );
-    montageOpts.tile("3x1");
+    montageOpts.tile("5x10");
+    //montageOpts.label("%s");
     montageImages( &montage, imageList.begin(), imageList.end(), montageOpts );
     writeImages(montage.begin(), montage.end(), "new.jpg");
   }

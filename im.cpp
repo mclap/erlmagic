@@ -63,12 +63,10 @@ vector<Image> getImageVector(int param_num, ETERM* msg)
   }
   for (ETERM *hd = erl_hd(list); hd != NULL; hd = erl_hd(list)) {
     int idx = ERL_INT_VALUE(hd);
-    cout << "idx = " << idx << endl;
     Image& image = image_map[idx];
     rval.push_back(image);
     list = erl_tl(list);
   }
-  cout << "list done" << endl;
 
   return rval;
 }
@@ -145,16 +143,28 @@ int main(int argc,char **argv)
 	}
 	else if (command == "montageImages") {
 	  vector<Image> imageList = getImageVector(2, msg);
-	  string file((const char*) erl_iolist_to_string(erl_element(3, msg)));
+	  string tile((const char*) erl_iolist_to_string(erl_element(3, msg)));
+	  string file((const char*) erl_iolist_to_string(erl_element(4, msg)));
 	  vector<Image> montage;
 	  MontageFramed montageOpts;
+	  montageOpts.borderColor( "green" );
+	  montageOpts.borderWidth( 1 );
+	  montageOpts.compose( OverCompositeOp );
+	  montageOpts.fileName( "Montage" );
+	  //montageOpts.frameGeometry( "6x6+3+3" );
+	  //montageOpts.geometry("50x50+2+2>");
+	  montageOpts.gravity( CenterGravity );
+	  montageOpts.penColor( "yellow" );
+	  montageOpts.shadow( true );
+	  montageOpts.texture( "granite:" );
+	  montageOpts.tile(tile);
 	  montageImages( &montage, imageList.begin(), imageList.end(), montageOpts );
 	  writeImages(montage.begin(), montage.end(), file);
 	  erl_send(fd, pid, ok);
 	}
 	else if (command == "clone") {
 	  Image& image = get_image(2, msg);
-	  Image clone = image;
+	  Image clone(image);
 	  image_map[image_index] = clone;
 	  ETERM *reply = erl_mk_int(image_index++);
 	  erl_send(fd, pid, reply);
