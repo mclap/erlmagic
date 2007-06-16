@@ -63,10 +63,13 @@ vector<Image> getImageVector(int param_num, ETERM* msg)
   }
   for (ETERM *hd = erl_hd(list); hd != NULL; hd = erl_hd(list)) {
     int idx = ERL_INT_VALUE(hd);
+    cout << "idx = " << idx << endl;
     Image& image = image_map[idx];
     rval.push_back(image);
     list = erl_tl(list);
   }
+  cout << "list done" << endl;
+
   return rval;
 }
 
