@@ -11,7 +11,7 @@ param_base_type(T) ->
 	"Blob" ->
 	    "??Blob";
 	"ChannelType" ->
-	    "??ChannelType";
+	    "ChannelType";
 	"Color" ->
 	    "Color";
 	"Geometry" ->
@@ -19,11 +19,11 @@ param_base_type(T) ->
 	"Image" ->
 	    "Image";
 	"ImageType" ->
-	    "??ImageType";
+	    "ImageType";
 	"MagickEvaluateOperator" ->
 	    "??MagickEvaluateOperator";
 	"PaintMethod" ->
-	    "??PaintMethod";
+	    "PaintMethod";
 	"Quantum" ->
 	    "??Quantum";
 	"StorageType" ->
@@ -49,13 +49,13 @@ param_base_type(T) ->
 	"Drawable" ->
 	    "??Drawable";
 	"GravityType" ->
-	    "??GravityType";
+	    "GravityType";
 	"CompositeOperator" ->
 	    "CompositeOperator";
 	"DrawableAffine" ->
 	    "??DrawableAffine";
 	"NoiseType" ->
-	    "??NoiseType";
+	    "NoiseType";
 	"unsigned" ->
 	    "??unsigned"
     end,
@@ -91,10 +91,6 @@ make_param(Out_file, [H|L], N, Param_fun, Acc1, Acc2) ->
 	    Acc21 = Acc2,
 	    Acc11 = Acc1,
 	    N_increment = 1;
-	"Geometry" ->
-	    Acc21 = [lists:flatten(Param_fun(Out_file, "string", Pname, "erl_iolist_to_string", N))|Acc2],
-	    N_increment = 1,
-	    Acc11 = ["Geometry(" ++ Pname ++ ")" | Acc1];
 	"Color" ->
 	    Red_name = Pname ++ "_red",
 	    Green_name = Pname ++ "_green",
@@ -104,9 +100,33 @@ make_param(Out_file, [H|L], N, Param_fun, Acc1, Acc2) ->
 	    Acc21 = [lists:flatten(Param_fun(Out_file, "double", Blue_name, "ERL_FLOAT_VALUE", N+2))|Acc213],
 	    N_increment = 3,
 	    Acc11 = ["ColorRGB(" ++ Red_name ++ "," ++ Green_name ++ "," ++ Blue_name ++ ")" | Acc1];
+	"Geometry" ->
+	    Acc21 = [lists:flatten(Param_fun(Out_file, "string", Pname, "erl_iolist_to_string", N))|Acc2],
+	    N_increment = 1,
+	    Acc11 = ["Geometry(" ++ Pname ++ ")" | Acc1];
 	"CompositeOperator" ->
 	    Acc21 = [lists:flatten(Param_fun(Out_file, "string", Pname, "erl_iolist_to_string", N))|Acc2],
 	    Acc11 = ["get_composite(" ++ Pname ++ ")" | Acc1],
+	    N_increment = 1;
+	"NoiseType" ->
+	    Acc21 = [lists:flatten(Param_fun(Out_file, "string", Pname, "erl_iolist_to_string", N))|Acc2],
+	    Acc11 = ["get_noise_type(" ++ Pname ++ ")" | Acc1],
+	    N_increment = 1;
+	"ChannelType" ->
+	    Acc21 = [lists:flatten(Param_fun(Out_file, "string", Pname, "erl_iolist_to_string", N))|Acc2],
+	    Acc11 = ["get_channel_type(" ++ Pname ++ ")" | Acc1],
+	    N_increment = 1;
+	"GravityType" ->
+	    Acc21 = [lists:flatten(Param_fun(Out_file, "string", Pname, "erl_iolist_to_string", N))|Acc2],
+	    Acc11 = ["get_gravity_type(" ++ Pname ++ ")" | Acc1],
+	    N_increment = 1;
+	"ImageType" ->
+	    Acc21 = [lists:flatten(Param_fun(Out_file, "string", Pname, "erl_iolist_to_string", N))|Acc2],
+	    Acc11 = ["get_image_type(" ++ Pname ++ ")" | Acc1],
+	    N_increment = 1;
+	"PaintMethod" ->
+	    Acc21 = [lists:flatten(Param_fun(Out_file, "string", Pname, "erl_iolist_to_string", N))|Acc2],
+	    Acc11 = ["get_paint_method(" ++ Pname ++ ")" | Acc1],
 	    N_increment = 1;
 	Pname_type ->
 	    Acc21 = [lists:flatten(Param_fun(Out_file, T, Pname, Pname_type, N))|Acc2],
