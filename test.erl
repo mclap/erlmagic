@@ -69,7 +69,9 @@ test6() ->
 test7() ->
     {Host, Image} = init(),
     Image2 = imagelib:read(Host, "test2.jpg"),
-    imagelib:montageImages([Image, Image2], "montage.jpg"),
+    io:format("after image2", []),
+    imagelib:montageImages(Host, [Image, Image2], "montage.jpg"),
+    io:format("after montage", []),
     Montage = imagelib:read(Host, "montage.jpg"),
     imagelib:display(Host, Montage).
 
