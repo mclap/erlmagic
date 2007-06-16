@@ -4,7 +4,7 @@
     void            annotate ( const std::string &text_, const Geometry &location_ );
     void            annotate ( const std::string &text_, const Geometry &boundingArea_, const GravityType gravity_ );
     void            annotate ( const std::string &text_, const Geometry &boundingArea_, const GravityType gravity_, const double degrees_ );
-    void            annotate ( const std::string &text_, const GravityType gravity_ );
+//    void            annotate ( const std::string &text_, const GravityType gravity_ );
     void            blur ( const double radius_ = 0.0, const double sigma_ = 1.0  );
     void            border ( const Geometry &geometry_ = borderGeometryDefault );
     void            channel ( const ChannelType channel_ );
@@ -20,7 +20,7 @@
     bool            compare ( const Image &reference_ );
 //    void            composite ( const Image &compositeImage_, const int xOffset_, const int yOffset_, const CompositeOperator compose_ = InCompositeOp );
     void            composite ( const Image &compositeImage_, const Geometry &offset_, const CompositeOperator compose_ = InCompositeOp );
-    void            composite ( const Image &compositeImage_, const GravityType gravity_, const CompositeOperator compose_ = InCompositeOp );
+//    void            composite ( const Image &compositeImage_, const GravityType gravity_, const CompositeOperator compose_ = InCompositeOp );
     void            contrast ( const unsigned int sharpen_ );
     void            convolve ( const unsigned int order_, const double *kernel_ );
     void            crop ( const Geometry &geometry_ );
@@ -56,7 +56,7 @@
     void            levelChannel ( const ChannelType channel, const double black_point, const double white_point, const double mid_point=1.0 );
     void            magnify ( void );
     void            map ( const Image &mapImage_ , const bool dither_ = false );
-    void            matteFloodfill ( const Color &target_ , const unsigned int opacity_, const int x_, const PaintMethod method_ );
+//    void            matteFloodfill ( const Color &target_ , const unsigned int opacity_, const int x_, const PaintMethod method_ );
     void            medianFilter ( const double radius_ = 0.0 );
     void            minify ( void );
     void            modulate ( const double brightness_, const double saturation_, const double hue_ );
