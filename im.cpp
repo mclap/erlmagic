@@ -54,6 +54,11 @@ void del_image(int param_num, ETERM* msg)
   image_map.erase(it);
 }
 
+void clear_images()
+{
+  image_map.erase(image_map.begin(), image_map.end());
+}
+
 vector<Image> getImageVector(int param_num, ETERM* msg)
 {
   vector<Image> rval;
@@ -172,6 +177,10 @@ int main(int argc,char **argv)
 	}
 	else if (command == "delete") {
 	  del_image(2, msg);
+	  erl_send(fd, pid, ok);
+	}
+	else if (command == "clear") {
+	  clear_images();
 	  erl_send(fd, pid, ok);
 	}
 
