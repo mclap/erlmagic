@@ -27,5 +27,5 @@ montageImages(Host, ImageList, Tile, File) ->
 clone(Host, Image) ->
     rpc(Host, {clone, Image}).
 
-clear(Host, Image) ->
+clear(Host, _) ->
     rpc(Host, {clear}).

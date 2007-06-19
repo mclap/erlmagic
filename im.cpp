@@ -85,6 +85,7 @@ int main(int argc,char **argv)
   int identification_number = 1;
   int creation=1;
   char *cookie="cookie"; /* An example */
+  string errcom;
 
   try {
     erl_init(NULL, 0);
@@ -132,6 +133,7 @@ int main(int argc,char **argv)
       ETERM *msg = erl_element(2, emsg.msg);
       if (ERL_IS_TUPLE(msg)) {
 	string command((const char*)ERL_ATOM_PTR(erl_element(1, msg)));
+	errcom = command;
 	if (command == "read") {
 	  string file((const char*) erl_iolist_to_string(erl_element(2, msg)));
 	  Image image;
@@ -196,7 +198,7 @@ int main(int argc,char **argv)
     }
   }
   catch( Exception &error_ ) {
-      cout << "Caught exception: " << error_.what() << endl;
+    cout << "Caught exception in command " << errcom << ": " << error_.what() << endl;
       return 1;
   }
   return 0;
