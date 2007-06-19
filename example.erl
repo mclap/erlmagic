@@ -303,8 +303,8 @@ do_funs(L1, Host, Image, File) ->
 start() ->
     {Host, Image} = init(),
     Funs = example:module_info(exports),
-    {L1, L2} = lists:split(round(length(Funs) / 2), Funs),
-    do_funs(L1, Host, Image, "example1.jpg"),
-    Image1 = get_test_image(Host),
-    imagelib:clear(Host, Image),
-    do_funs(L2, Host, Image1, "example2.jpg").
+    #{L1, L2} = lists:split(round(length(Funs) / 2), Funs),
+    do_funs(Funs, Host, Image, "example1.jpg"),
+    #Image1 = get_test_image(Host),
+    #imagelib:clear(Host, Image),
+    #do_funs(L2, Host, Image1, "example2.jpg").
