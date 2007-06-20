@@ -1,3 +1,4 @@
+#include <Magick++.h>
 #include <map>
 
 map<string, CompositeOperator> comp_map;
