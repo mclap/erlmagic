@@ -180,11 +180,11 @@ test_normalize(Host, Image) ->
     imagelib:label(Host, Ex, "normalize"),
     Ex.
 
-%test_oilPaint(Host, Image) ->
-%    Ex = imagelib:clone(Host, Image),
-%    imagelib:oilPaint(Host, Ex, 3.0),
-%    imagelib:label(Host, Ex, "oilPaint"),
-%    Ex.
+test_oilPaint(Host, Image) ->
+    Ex = imagelib:clone(Host, Image),
+    imagelib:oilPaint(Host, Ex, 3.0),
+    imagelib:label(Host, Ex, "oilPaint"),
+    Ex.
 
 
 test_quantize(Host, Image) ->
@@ -267,7 +267,7 @@ test_solarize(Host, Image) ->
 
 test_spread(Host, Image) ->
     Ex = imagelib:clone(Host, Image),
-    imagelib:spread(Host, Ex, 3.0),
+    imagelib:spread(Host, Ex, 3),
     imagelib:label(Host, Ex, "spread"),
     Ex.
 
@@ -294,7 +294,7 @@ test_wave(Host, Image) ->
 do_funs(L1, Host, Image, File) -> 
     L = [apply(example, element(1, X), [Host, Image]) || X <- L1, 
 							 string:substr(atom_to_list(element(1, X)), 1, 5) == "test_"],
-    Width = round(length(L) / 5),
+    Width = round((length(L)+1) / 5),
     Dim = integer_to_list(Width) ++ "x5",
     imagelib:montageImages(Host, L, Dim, File),
     Montage = imagelib:read(Host, File),
@@ -303,8 +303,8 @@ do_funs(L1, Host, Image, File) ->
 start() ->
     {Host, Image} = init(),
     Funs = example:module_info(exports),
-    #{L1, L2} = lists:split(round(length(Funs) / 2), Funs),
-    do_funs(Funs, Host, Image, "example1.jpg"),
-    #Image1 = get_test_image(Host),
-    #imagelib:clear(Host, Image),
-    #do_funs(L2, Host, Image1, "example2.jpg").
+    %{L1, L2} = lists:split(round(length(Funs) / 2), Funs),
+    do_funs(Funs, Host, Image, "example1.jpg").
+    %Image1 = get_test_image(Host),
+    %imagelib:clear(Host, Image),
+    %do_funs(L2, Host, Image1, "example2.jpg").
