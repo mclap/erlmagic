@@ -6,7 +6,7 @@ COMPILE = $(CXX) $(CXXFLAGS) -c
 LD = $(CXX)
 LDFLAGS = `Magick++-config --ldflags` --Wl,--stack,67108864
 LIBS = `Magick++-config --libs`  -lerl_interface -lei `pkg-config --libs gthread`
-OBJS = im.o
+OBJS = im.o composite_def.o
 
 .erl.beam:
 	erlc -W $<
@@ -24,6 +24,8 @@ im: $(OBJS)
 	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
 
 im.o: im_commands.h im.cpp
+
+composite_def.o: composite_def.cpp
 
 %.o: %.cpp
 	$(COMPILE) $< -o $@

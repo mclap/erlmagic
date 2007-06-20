@@ -296,15 +296,11 @@ do_funs(L1, Host, Image, File) ->
 							 string:substr(atom_to_list(element(1, X)), 1, 5) == "test_"],
     Width = round((length(L)+1) / 5),
     Dim = integer_to_list(Width) ++ "x5",
-    imagelib:montageImages(Host, L, Dim, File),
+    imagelib:montageImages(Host, L, [{tile, Dim}, {file, File}]),
     Montage = imagelib:read(Host, File),
     imagelib:display(Host, Montage).
 
 start() ->
     {Host, Image} = init(),
     Funs = example:module_info(exports),
-    %{L1, L2} = lists:split(round(length(Funs) / 2), Funs),
     do_funs(Funs, Host, Image, "example1.jpg").
-    %Image1 = get_test_image(Host),
-    %imagelib:clear(Host, Image),
-    %do_funs(L2, Host, Image1, "example2.jpg").

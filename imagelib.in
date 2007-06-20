@@ -21,8 +21,8 @@ write(Host, File) ->
 delete(Host, Image) ->
     rpc(Host, {delete, Image}).
 
-montageImages(Host, ImageList, Tile, File) ->
-    rpc(Host, {montageImages, ImageList, Tile, File}).
+montageImages(Host, ImageList, Opts) ->
+    rpc(Host, {montageImages, ImageList, Opts}).
 
 clone(Host, Image) ->
     rpc(Host, {clone, Image}).
