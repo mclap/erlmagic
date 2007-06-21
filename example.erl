@@ -296,7 +296,7 @@ do_funs(L1, Host, Image, File) ->
 							 string:substr(atom_to_list(element(1, X)), 1, 5) == "test_"],
     Width = round((length(L)+1) / 5),
     Dim = integer_to_list(Width) ++ "x5",
-    imagelib:montageImages(Host, L, [{tile, Dim}, {file, File}]),
+    imagelib:montageImages(Host, L, [{tile, Dim}], File),
     Montage = imagelib:read(Host, File),
     imagelib:display(Host, Montage).
 

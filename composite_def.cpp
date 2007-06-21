@@ -1,5 +1,11 @@
 #include <Magick++.h>
 #include <map>
+#include <string>
+#include <iostream>
+
+using namespace std;
+using namespace Magick;
+
 
 map<string, CompositeOperator> comp_map;
 

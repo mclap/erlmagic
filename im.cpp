@@ -5,11 +5,14 @@
 #define PORT 7001
 #define BUFSIZE 10000
 
+#include "composite_def.h"
+
 #include <Magick++.h>
 #include <iostream>
 #include <string>
 #include <list>
 #include <vector>
+
 
 using namespace std;
 using namespace Magick;
@@ -75,7 +78,7 @@ vector<Image> getImageVector(int param_num, ETERM* msg)
   return rval;
 }
 
-MontageFramed& get_montage_opts(int param_num, ETERM* msg) {
+MontageFramed get_montage_opts(int param_num, ETERM* msg) {
   MontageFramed rval;
 
   // defaults
@@ -99,43 +102,40 @@ MontageFramed& get_montage_opts(int param_num, ETERM* msg) {
     string opt((const char*) ERL_ATOM_PTR(erl_element(1, hd)));
     ETERM *param = erl_element(2, hd);
     if (opt == "bordercolor") {
-      rval.bordercolor(ERL_INT_VALUE(param));
+      string color((const char*) erl_iolist_to_string(param));
+      rval.borderColor(color);
     }
-    else if (opt = "borderWidth") {
+    else if (opt == "borderWidth") {
       rval.borderWidth(ERL_INT_VALUE(param) );
     }
-    else if (opt = "compose") {
+    else if (opt == "compose") {
       string comp_op((const char*) erl_iolist_to_string(param));
       rval.compose( get_composite(comp_op));
     }
-    else if (opt = "fileName") {
-      string file((const char*) erl_iolist_to_string(param));
-      rval.fileName(file );
-    }
-    else if (opt = "frameGeometry") {
+    else if (opt == "frameGeometry") {
       string geometry((const char*) erl_iolist_to_string(param));
       rval.frameGeometry( geometry );
     }
-    else if (opt = "geometry") {
+    else if (opt == "geometry") {
       string geometry((const char*) erl_iolist_to_string(param));
       rval.geometry( geometry );
     }
-    else if (opt = "gravity") {
+    else if (opt == "gravity") {
       string gravity_op((const char*) erl_iolist_to_string(param));
-      rval.gravity( get_gravity(opt) );
+      rval.gravity( get_gravity_type(opt) );
     }
-    else if (opt = "penColor") {
+    else if (opt == "penColor") {
       string color((const char*) erl_iolist_to_string(param));
       rval.penColor( color );
     }
-    else if (opt = "shadow") {
+    else if (opt == "shadow") {
       rval.shadow(ERL_INT_VALUE(param) );
     }
-    else if (opt = "texture") {
+    else if (opt == "texture") {
       string texture((const char*) erl_iolist_to_string(param));
       rval.texture( texture );
     }
-    else if (opt = "tile") {
+    else if (opt == "tile") {
       string tile((const char*) erl_iolist_to_string(param));
       rval.tile(tile);
     }
@@ -219,8 +219,9 @@ int main(int argc,char **argv)
 	else if (command == "montageImages") {
 	  vector<Image> imageList = getImageVector(2, msg);
 	  //string tile((const char*) erl_iolist_to_string(erl_element(3, msg)));
-	  //string file((const char*) erl_iolist_to_string(erl_element(4, msg)));
-	  MontageFramed &montageOpts = get_montage_opts(3, msg);
+	  MontageFramed montageOpts = get_montage_opts(3, msg);
+	  string file((const char*) erl_iolist_to_string(erl_element(4, msg)));
+	  montageOpts.fileName(file);
 	  vector<Image> montage;
 	  montageImages( &montage, imageList.begin(), imageList.end(), montageOpts );
 	  writeImages(montage.begin(), montage.end(), file);

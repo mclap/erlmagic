@@ -1,7 +1,7 @@
 .SUFFIXES: .erl .beam .yrl
 
 CXX = gcc
-CXXFLAGS = -g -Wall `Magick++-config --cppflags --cxxflags`  -I/usr/lib/erlang/lib/erl_interface-3.5.5.1/include
+CXXFLAGS = -g -Wall `Magick++-config --cppflags --cxxflags`  -I/usr/lib/erlang/lib/erl_interface-3.5.5.1/include -I.
 COMPILE = $(CXX) $(CXXFLAGS) -c
 LD = $(CXX)
 LDFLAGS = `Magick++-config --ldflags` --Wl,--stack,67108864

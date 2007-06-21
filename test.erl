@@ -67,7 +67,7 @@ test6() ->
 test7() ->
     {Host, Image} = init(),
     Image2 = imagelib:read(Host, "test2.jpg"),
-    imagelib:montageImages(Host, [Image, Image2], "2x1", "montage.jpg"),
+    imagelib:montageImages(Host, [Image, Image2], [{tile, "2x1"}], "montage.jpg"),
     Montage = imagelib:read(Host, "montage.jpg"),
     imagelib:display(Host, Montage).
 
