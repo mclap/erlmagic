@@ -74,3 +74,8 @@ test7() ->
 
 
 
+test8() ->
+    {Host, Image} = init(),
+    imagelib:level(Host, Image, 10.0, 250.0, 1.0),
+    imagelib:display(Host, Image),
+    Image.

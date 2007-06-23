@@ -112,6 +112,14 @@ MontageFramed get_montage_opts(int param_num, ETERM* msg) {
       string comp_op((const char*) erl_iolist_to_string(param));
       rval.compose( get_composite(comp_op));
     }
+    else if (opt == "fillColor") {
+      string color((const char*) erl_iolist_to_string(param));
+      rval.fillColor(color);
+    }
+    else if (opt == "font") {
+      string font((const char*) erl_iolist_to_string(param));
+      rval.font( font );
+    }
     else if (opt == "frameGeometry") {
       string geometry((const char*) erl_iolist_to_string(param));
       rval.frameGeometry( geometry );
@@ -127,6 +135,9 @@ MontageFramed get_montage_opts(int param_num, ETERM* msg) {
     else if (opt == "penColor") {
       string color((const char*) erl_iolist_to_string(param));
       rval.penColor( color );
+    }
+    else if (opt == "pointSize") {
+      rval.pointSize(ERL_INT_VALUE(param) );
     }
     else if (opt == "shadow") {
       rval.shadow(ERL_INT_VALUE(param) );

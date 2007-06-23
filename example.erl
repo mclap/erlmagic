@@ -150,7 +150,7 @@ test_implode(Host, Image) ->
 
 test_level(Host, Image) ->
     Ex = imagelib:clone(Host, Image),
-    imagelib:level(Host, Ex,1.20,1.20,1.0),
+    imagelib:level(Host, Ex,10.0,250.0,1.0),
     imagelib:label(Host, Ex, "level"),
     Ex.
 
@@ -296,7 +296,11 @@ do_funs(L1, Host, Image, File) ->
 							 string:substr(atom_to_list(element(1, X)), 1, 5) == "test_"],
     Width = round((length(L)+1) / 5),
     Dim = integer_to_list(Width) ++ "x5",
-    imagelib:montageImages(Host, L, [{tile, Dim}], File),
+    imagelib:montageImages(Host, L, [{tile, Dim},
+				     {fillColor, "#600"}, 
+				     {font, "Helvetica-Oblique"}, 
+				     {pointSize, 18}, 
+				     {gravity, "Center"}], File),
     Montage = imagelib:read(Host, File),
     imagelib:display(Host, Montage).
 
