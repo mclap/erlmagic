@@ -224,6 +224,7 @@ int main(int argc,char **argv)
 	else if (command == "write") {
 	  Image& image = get_image(2, msg);
 	  string file((const char*) erl_iolist_to_string(erl_element(3, msg)));
+	  cout << "writing " << file << endl;
 	  image.write(file);
 	  erl_send(fd, pid, ok);
 	}
