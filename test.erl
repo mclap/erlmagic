@@ -79,3 +79,16 @@ test8() ->
     imagelib:level(Host, Image, 10.0, 250.0, 1.0),
     imagelib:display(Host, Image),
     Image.
+
+one_attrib(Attrib) ->
+    string:tokens(Attrib, "=").
+
+test9() ->
+    {Host, Image} = init(),
+    L = lists:map(fun one_attrib/1, string:tokens(imagelib:attribute(Host, Image, "EXIF:*"), "\n")),
+    lists:foreach(fun(X) -> io:format("~p~n", [X]) end, L).
+		    
+
+
+
+    

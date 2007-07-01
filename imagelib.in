@@ -29,3 +29,6 @@ clone(Host, Image) ->
 
 clear(Host, _) ->
     rpc(Host, {clear}).
+
+attribute(Host, Image, Attribute) ->
+    rpc(Host, {attribute, Image, Attribute}).

@@ -255,6 +255,13 @@ int main(int argc,char **argv)
 	  clear_images();
 	  erl_send(fd, pid, ok);
 	}
+	else if (command == "attribute") {
+	  Image& image = get_image(2, msg);
+	  string attribute(erl_iolist_to_string(erl_element(3, msg)));
+	  string attrib(image.attribute(attribute));
+	  ETERM *reply = erl_mk_estring(attrib.c_str(), attrib.size());
+	  erl_send(fd, pid, reply);
+	}
 
 #include "im_commands.h"
 	if (command == "quit") {
