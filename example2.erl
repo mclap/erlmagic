@@ -67,7 +67,7 @@ write_html(Dest_dir, Names) ->
 	    do_html(Out_file, Names),
 	    io:format(Out_file, "</table></body></html>~n", []);
 	{error, Reason} ->
-	    io:format("couldn't open file ~p~n", [Reason])
+	    io:format("couldn't possibly open file ~p~n", [Reason])
     end.
 
 start(Source_dir, Dest_dir) ->
